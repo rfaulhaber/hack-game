@@ -19,20 +19,27 @@ impl WordSet {
 
 		let mut current_index = 0;
 
-		for (i, line) in buf.lines().enumerate() {
+		for line in buf.lines() {
 			let line_str = line.unwrap();
 			let line_len = line_str.len();
 
-			if words_by_len.is_empty() {
-				words_by_len.push(vec![line_str]);
-			} else {
-				// thank you clippy
-				let index = len_ids.entry(line_len).or_insert_with(|| {
-					let next_index = current_index + 1;
-					current_index
-				});
+			// TODO adhere clippy warning
+			/*
+						from stackoverflow
+						use std::collections::hash_map::Entry;
 
-				words_by_len[*index].push(line_str);
+			let values: &Vec<isize> = match map.entry(key) {
+				Entry::Occupied(o) => o.into_mut(),
+				Entry::Vacant(v) => v.insert(default)
+			};
+						*/
+
+			if len_ids.contains_key(&line_len) {
+				let index = len_ids[&line_len];
+				words_by_len[index].push(line_str);
+			} else {
+				len_ids.insert(line_len, words_by_len.len());
+				words_by_len.push(vec![line_str]);
 			}
 		}
 
