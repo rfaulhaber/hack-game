@@ -4,7 +4,7 @@ use rand::seq::SliceRandom;
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 use std::io::prelude::*;
-use std::io::{BufReader, Cursor, Read};
+use std::io::BufReader;
 
 pub struct WordSet {
 	words_by_len: Vec<Vec<String>>,
@@ -40,7 +40,7 @@ impl WordSet {
 		}
 	}
 
-	pub fn get_word_list(&self, word_len: usize, list_len: usize) -> Vec<String> {
+	pub fn get_random_word_list(&self, word_len: usize, list_len: usize) -> Vec<String> {
 		let mut rng = &mut rand::thread_rng();
 
 		let key = self.len_ids[&word_len];
@@ -58,6 +58,7 @@ impl WordSet {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use std::io::Cursor;
 
 	#[test]
 	fn get_word_list_returns_random_list() {
@@ -65,7 +66,7 @@ mod tests {
 
 		let set = WordSet::from_reader(&mut words);
 
-		let result = set.get_word_list(2, 2);
+		let result = set.get_random_word_list(2, 2);
 
 		assert_eq!(result.len(), 2);
 		assert!(result.contains(&String::from("be")));
