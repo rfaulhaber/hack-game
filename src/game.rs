@@ -62,6 +62,18 @@ impl Game {
 			total: self.password.len() as u8,
 		}
 	}
+
+	pub fn get_word_list(&self) -> Vec<String> {
+		self.word_list.clone()
+	}
+
+	pub fn ongoing(&self) -> bool {
+		self.turns > 0
+	}
+
+	pub fn turns(&self) -> u8 {
+		self.turns
+	}
 }
 
 fn get_word_len_by_difficulty(diff: Difficulty) -> u8 {
