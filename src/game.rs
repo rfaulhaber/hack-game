@@ -57,9 +57,13 @@ impl Game {
 
 		self.turns -= 1;
 
-		GuessResult::Incorrect {
-			matching: matching,
-			total: self.password.len() as u8,
+		if self.turns == 0 {
+			GuessResult::GameOver
+		} else {
+			GuessResult::Incorrect {
+				matching: matching,
+				total: self.password.len() as u8,
+			}
 		}
 	}
 
